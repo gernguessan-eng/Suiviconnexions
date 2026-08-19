@@ -8,8 +8,8 @@ const PresenceContext = createContext(null)
 
 export function PresenceProvider({ children }) {
   const { docs: presenceDocs, loading: presenceLoading, error, lastSync } = usePresence()
-  const { users, loading: usersLoading } = useUsers()
-  const { entreprises, loading: entreprisesLoading } = useEntreprises()
+  const { users, loading: usersLoading, error: usersError } = useUsers()
+  const { entreprises, loading: entreprisesLoading, error: entreprisesError } = useEntreprises()
 
   // Jointure presence → users → entreprises, recalculée à chaque mise à
   // jour temps réel de n'importe laquelle des trois collections.
@@ -26,6 +26,8 @@ export function PresenceProvider({ children }) {
     docs,
     loading,
     error,
+    usersError,
+    entreprisesError,
     lastSync,
     users,
     entreprises: entreprisesDisplay,

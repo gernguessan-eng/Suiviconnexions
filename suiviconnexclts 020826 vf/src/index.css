@@ -144,6 +144,35 @@ button {
   text-align: center;
 }
 
+.nav-item-reorder {
+  background: var(--bg-elevated);
+  border: 1px dashed var(--panel-border-soft);
+  cursor: grab;
+}
+
+.nav-item-reorder:active {
+  cursor: grabbing;
+}
+
+.nav-reorder-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-faint);
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  display: flex;
+}
+
+.nav-reorder-btn:hover:not(:disabled) {
+  color: var(--text-primary);
+}
+
+.nav-reorder-btn:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
 .sidebar-footer {
   margin-top: auto;
   padding: 12px;

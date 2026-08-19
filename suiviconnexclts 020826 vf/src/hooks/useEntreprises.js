@@ -9,6 +9,7 @@ import { ENTREPRISES_COLLECTION } from "../config/presenceSchema"
 export function useEntreprises() {
   const [entreprises, setEntreprises] = useState([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -21,16 +22,18 @@ export function useEntreprises() {
         }))
         setEntreprises(rows)
         setLoading(false)
+        setError(null)
       },
       (err) => {
         console.error("Erreur d'écoute Firestore (entreprises):", err)
+        setError(err)
         setLoading(false)
       }
     )
     return () => unsubscribe()
   }, [])
 
-  return { entreprises, loading }
+  return { entreprises, loading, error }
 }
 
 // Crée une nouvelle entreprise dans Firestore. Elle apparaîtra

@@ -18,7 +18,7 @@ const inputStyle = {
 }
 
 export default function Entreprises() {
-  const { docs, loading, error, lastSync, users, entreprises } = usePresenceContext()
+  const { docs, loading, error, entreprisesError, lastSync, users, entreprises } = usePresenceContext()
 
   const stats = groupByEntreprise(docs)
   const statsById = new Map(stats.map((s) => [s.entrepriseId, s]))
@@ -47,6 +47,7 @@ export default function Entreprises() {
 
       <SetupBanner />
       <ErrorBanner error={error} />
+      <ErrorBanner error={entreprisesError} collection="entreprises" />
 
       <CreateEntrepriseForm />
 

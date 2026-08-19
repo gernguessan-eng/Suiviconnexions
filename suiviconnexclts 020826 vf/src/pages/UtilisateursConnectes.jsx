@@ -29,8 +29,8 @@ export default function UtilisateursConnectes() {
     try {
       await closeSession(id)
     } catch (err) {
-      console.error("Impossible de clôturer la session", err)
-      alert("Impossible de clôturer cette session : " + err.message)
+      console.error("Impossible de marquer hors ligne", err)
+      alert("Impossible de marquer cette session hors ligne : " + err.message)
     } finally {
       setClosingId(null)
     }
@@ -100,8 +100,9 @@ export default function UtilisateursConnectes() {
           <div className="banner setup" style={{ marginBottom: 16 }}>
             ⚠ Une ou plusieurs sessions sont "Connecté" depuis plus de{" "}
             {formatDuration(STALE_SESSION_MS)} — probablement des déconnexions jamais enregistrées
-            côté application (onglet fermé, crash, coupure réseau). Vous pouvez les clôturer
-            manuellement ci-dessous.
+            côté application (onglet fermé, crash, coupure réseau). Vous pouvez corriger l'affichage
+            avec "Marquer hors ligne" ci-dessous — ça ne déconnecte pas réellement la personne, ça
+            corrige seulement ce que ce tableau affiche.
           </div>
         )}
 
@@ -152,6 +153,7 @@ export default function UtilisateursConnectes() {
                       <button
                         onClick={() => handleClose(u.id)}
                         disabled={closingId === u.id || deletingId === u.id}
+                        title="Corrige uniquement l'affichage (statut Firestore) — n'interrompt pas la session réelle de l'utilisateur dans son application"
                         style={{
                           background: "transparent",
                           border: "1px solid var(--panel-border-soft)",
@@ -163,7 +165,7 @@ export default function UtilisateursConnectes() {
                           whiteSpace: "nowrap",
                         }}
                       >
-                        {closingId === u.id ? "…" : "Clôturer"}
+                        {closingId === u.id ? "…" : "Marquer hors ligne"}
                       </button>
                       <button
                         onClick={() => handleDelete(u)}
