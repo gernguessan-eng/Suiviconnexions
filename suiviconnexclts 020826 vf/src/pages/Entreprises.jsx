@@ -4,8 +4,9 @@ import TopBar from "../components/TopBar"
 import { SetupBanner, ErrorBanner } from "../components/Banners"
 import { groupByEntreprise, groupByUser, withDuration } from "../utils/presenceStats"
 import { formatDateTime, formatDuration } from "../utils/date"
-import { createEntreprise } from "../hooks/useEntreprises"
+import { createEntreprise, deleteEntreprise } from "../hooks/useEntreprises"
 import { assignUserEntreprise } from "../hooks/useUsers"
+import DeleteGuardButton from "../components/DeleteGuardButton"
 import { DEFAULT_ENTREPRISE } from "../config/presenceSchema"
 
 const inputStyle = {
@@ -34,6 +35,10 @@ export default function Entreprises() {
       usersTotalCount: s?.usersTotalCount ?? 0,
       totalSessions: s?.totalSessions ?? 0,
       lastActivity: s?.lastActivity ?? null,
+      // L'entreprise par défaut "RISE SASU" est injectée automatiquement
+      // quand aucun document réel n'existe pour cet id — inutile (et
+      // trompeur) de proposer de la "supprimer" dans ce cas.
+      isSyntheticDefault: e.id === DEFAULT_ENTREPRISE.id && e.createdAt == null,
     }
   })
 
@@ -65,9 +70,25 @@ export default function Entreprises() {
           <div className="entreprise-grid">
             {rows.map((e) => (
               <div className="entreprise-card" key={e.entrepriseId}>
-                <div className="name">
-                  {e.entrepriseName}{" "}
-                  {e.usersOnlineCount > 0 && <span className="pulse-dot" style={{ marginLeft: 4 }} />}
+                <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
+                  <div className="name">
+                    {e.entrepriseName}{" "}
+                    {e.usersOnlineCount > 0 && <span className="pulse-dot" style={{ marginLeft: 4 }} />}
+                  </div>
+                  <DeleteGuardButton
+                    label={
+                      e.usersTotalCount > 0
+                        ? `l'entreprise "${e.entrepriseName}" — ⚠ ${e.usersTotalCount} utilisateur(s) y sont encore rattaché(s) et se retrouveront avec "Entreprise inconnue" tant qu'ils ne seront pas réassignés`
+                        : `l'entreprise "${e.entrepriseName}" (aucun utilisateur rattaché)`
+                    }
+                    onDelete={() => deleteEntreprise(e.entrepriseId)}
+                    className="contact-icon-btn"
+                    style={{
+                      color: "var(--accent-alert)",
+                      flexShrink: 0,
+                      visibility: e.isSyntheticDefault ? "hidden" : "visible",
+                    }}
+                  />
                 </div>
                 <div className="entreprise-stat-row">
                   <span>En ligne actuellement</span>

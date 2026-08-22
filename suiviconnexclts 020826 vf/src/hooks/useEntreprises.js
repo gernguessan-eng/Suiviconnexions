@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { collection, onSnapshot, addDoc, serverTimestamp } from "firebase/firestore"
+import { collection, onSnapshot, addDoc, deleteDoc, doc, serverTimestamp } from "firebase/firestore"
 import { db } from "../firebase"
 import { ENTREPRISES_COLLECTION } from "../config/presenceSchema"
 
@@ -45,4 +45,12 @@ export async function createEntreprise(name) {
     name: trimmed,
     createdAt: serverTimestamp(),
   })
+}
+
+// Supprime une entreprise. ⚠️ Ne réaffecte pas automatiquement les
+// utilisateurs qui y étaient rattachés (leur entrepriseId ne correspondra
+// plus à rien) — l'appelant doit vérifier ce cas avant de confirmer,
+// voir le message d'avertissement dans Entreprises.jsx.
+export async function deleteEntreprise(id) {
+  return deleteDoc(doc(db, ENTREPRISES_COLLECTION, id))
 }
