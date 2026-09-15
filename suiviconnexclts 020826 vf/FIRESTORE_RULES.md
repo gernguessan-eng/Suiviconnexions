@@ -1,5 +1,24 @@
 # Règles de sécurité Firestore — projet riseappli-prod
 
+> ## ⚠️ LIRE AVANT DE MODIFIER — projet partagé entre plusieurs apps
+>
+> `riseappli-prod` héberge à la fois les données de RiseAppli **et** les
+> collections communes de RISE Presence (`presence`, `users`, `entreprises`,
+> `contacts`, `prospects`). Firestore ne fusionne jamais deux versions de
+> règles : publier de nouvelles règles **remplace tout** ce qui existait,
+> même les blocs qu'on ne connaît pas ou n'a pas pensé à garder.
+>
+> **Avant de publier quoi que ce soit ici** — même depuis une autre
+> conversation Claude, un autre outil, ou en travaillant sur une tout autre
+> application (SOCOB, G4S, RiseAppli...) — copiez d'abord le contenu de CE
+> fichier tel quel comme point de départ, ajoutez ou modifiez uniquement ce
+> qui est nécessaire, puis republiez l'ensemble. Ne jamais repartir d'une
+> ancienne capture d'écran ou d'une version reconstituée de mémoire.
+>
+> **Après toute publication de règles**, remettez ce fichier à jour pour
+> qu'il reflète exactement ce qui est en ligne — c'est la seule façon de
+> garder une source fiable pour la prochaine fois.
+
 Ce fichier documente les règles **actuellement en place** (avec système de
 rôles `canWrite()`), pour que le prochain ajout de collection soit simple à
 intégrer sans tout redécouvrir.
